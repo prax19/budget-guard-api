@@ -6,10 +6,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 @Configuration
 @EnableAutoConfiguration
+@EnableJpaRepositories(basePackages = "com.prax19.repositories")
 @ComponentScan(basePackages = {"com.prax19"})
 @EntityScan(basePackages = {"com.prax19.entities"})
 public class BudgetGuardApiApplication {
