@@ -10,7 +10,7 @@ import com.prax19.requests.RegistrationRequest;
 @Service
 public class RegistrationService {
 
-    private final static String EMAIL_NOT_VALID_MSG = "email \'%s\' not valid";
+    private final static String EMAIL_NOT_VALID_MSG = "email '%s' not valid";
 
     @Autowired
     private EmailValidator emailValidator;

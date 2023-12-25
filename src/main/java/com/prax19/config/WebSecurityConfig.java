@@ -54,8 +54,8 @@ public class WebSecurityConfig {
                 .anyRequest().authenticated()
             ).httpBasic(withDefaults());
         http.csrf(AbstractHttpConfigurer::disable);
-//        http.headers((header) -> header.frameOptions((option) -> option.disable()));
-//        http.cors((cors) -> cors.disable());
+        http.headers((header) -> header.frameOptions((option) -> option.disable()));
+        http.cors((cors) -> cors.disable());
         http.authenticationProvider(daoAuthenticationProvider());
 
         return http.build();
