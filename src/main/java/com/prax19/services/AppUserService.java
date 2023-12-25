@@ -1,6 +1,7 @@
 package com.prax19.services;
 
 import com.prax19.entities.AppUser;
+import com.prax19.entities.User;
 import com.prax19.repositories.AppUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -37,6 +38,7 @@ public class AppUserService implements UserDetailsService {
         String encodedPassword = bCryptPasswordEncoder.encode(appUser.getPassword());
         appUser.setPassword(encodedPassword);
 
+        appUser.setUser(new User(appUser));
         appUserRepository.save(appUser);
 
         return appUser.getEmail();

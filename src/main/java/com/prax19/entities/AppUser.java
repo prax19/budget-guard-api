@@ -3,19 +3,18 @@ package com.prax19.entities;
 import java.util.Collection;
 import java.util.Collections;
 
+import jakarta.persistence.*;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.SequenceGenerator;
 
+@Data
+@NoArgsConstructor
+@RequiredArgsConstructor
 @Entity
+@Table(name = "app_users")
 public class AppUser implements UserDetails {
 
     @Id
@@ -28,66 +27,34 @@ public class AppUser implements UserDetails {
         strategy = GenerationType.SEQUENCE,
         generator = "users_sequence"
     )
+    @Column(name="id")
     private Long id;
 
+    @NonNull
     private String firstName;
 
+    @NonNull
     private String lastName;
 
+    @NonNull
     private String email;
 
+    @NonNull
     private String password;
 
+    @NonNull
     @Enumerated(EnumType.STRING)
     private AppUserRole appUserRole;
 
+    @NonNull
     private Boolean locked;
-    
+
+    @NonNull
     private Boolean enabled;
 
-    public AppUser(
-        String firstName, 
-        String lastName, 
-        String email, 
-        String password, 
-        AppUserRole appUserRole,
-        Boolean locked, 
-        Boolean enabled
-    ) {
-        setFirstName(firstName);
-        setLastName(lastName);
-        setEmail(email);
-        setPassword(password);
-        setAppUserRole(appUserRole);
-        setLocked(locked);
-        setEnabled(enabled);
-    }
-
-    public AppUser() { }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+    @OneToOne(mappedBy = "details", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private User user;
 
     @Override
     public String getUsername() {
@@ -98,17 +65,9 @@ public class AppUser implements UserDetails {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-    
     @Override
     public String getPassword() {
         return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     @Override
@@ -118,25 +77,9 @@ public class AppUser implements UserDetails {
         return Collections.singletonList(authority);
     }
 
-    public AppUserRole getAppUserRole() {
-        return appUserRole;
-    }
-
-    public void setAppUserRole(AppUserRole appUserRole) {
-        this.appUserRole = appUserRole;
-    }
-
     @Override
     public boolean isAccountNonLocked() {
         return !locked;
-    }
-
-    public void setLocked(Boolean locked) {
-        this.locked = locked;
-    }
-
-    public void setEnabled(Boolean enabled) {
-        this.enabled = enabled;
     }
 
     @Override
@@ -151,70 +94,6 @@ public class AppUser implements UserDetails {
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
-        result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
-        result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
-        result = prime * result + ((email == null) ? 0 : email.hashCode());
-        result = prime * result + ((password == null) ? 0 : password.hashCode());
-        result = prime * result + ((appUserRole == null) ? 0 : appUserRole.hashCode());
-        result = prime * result + ((locked == null) ? 0 : locked.hashCode());
-        result = prime * result + ((enabled == null) ? 0 : enabled.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        AppUser other = (AppUser) obj;
-        if (id == null) {
-            if (other.id != null)
-                return false;
-        } else if (!id.equals(other.id))
-            return false;
-        if (firstName == null) {
-            if (other.firstName != null)
-                return false;
-        } else if (!firstName.equals(other.firstName))
-            return false;
-        if (lastName == null) {
-            if (other.lastName != null)
-                return false;
-        } else if (!lastName.equals(other.lastName))
-            return false;
-        if (email == null) {
-            if (other.email != null)
-                return false;
-        } else if (!email.equals(other.email))
-            return false;
-        if (password == null) {
-            if (other.password != null)
-                return false;
-        } else if (!password.equals(other.password))
-            return false;
-        if (appUserRole != other.appUserRole)
-            return false;
-        if (locked == null) {
-            if (other.locked != null)
-                return false;
-        } else if (!locked.equals(other.locked))
-            return false;
-        if (enabled == null) {
-            if (other.enabled != null)
-                return false;
-        } else if (!enabled.equals(other.enabled))
-            return false;
         return true;
     }
     
