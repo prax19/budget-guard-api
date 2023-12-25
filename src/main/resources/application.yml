@@ -1,3 +1,8 @@
+budget-guard:
+  api-key:
+    key: X-API-KEY
+    value: cbf94cc5-98f9-4da4-bc6f-67b0bc16e129
+
 server:
   error:
     include-message: always

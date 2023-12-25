@@ -1,19 +1,22 @@
 package com.prax19.config;
 
-import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
-import static org.springframework.security.config.Customizer.withDefaults;
-
+import com.prax19.services.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import com.prax19.services.AppUserService;
+import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
+import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
@@ -25,18 +28,34 @@ public class WebSecurityConfig {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    @Value("${budget-guard.api-key.key}")
+    private String principalRequestHeader;
+
+    @Value("${budget-guard.api-key.value}")
+    private String principalRequestValue;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-            .authorizeHttpRequests((auth) -> auth
+        final ApiKayAuthFilter filter = new ApiKayAuthFilter(principalRequestHeader);
+        filter.setAuthenticationManager((Authentication authentication) -> {
+                final String principal = (String) authentication.getPrincipal();
+                if(!principalRequestValue.equals(principal))
+                    throw new BadCredentialsException("User did not provide valid API key");
+                authentication.setAuthenticated(true);
+                return authentication;
+            }
+        );
+
+        http.sessionManagement((session) -> session
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        http.addFilter(filter);
+        http.authorizeHttpRequests((auth) -> auth
                 .requestMatchers(toH2Console()).permitAll()
-                .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v*/registration/**")).permitAll()
                 .anyRequest().authenticated()
             ).httpBasic(withDefaults());
-        http.csrf((csrf) -> csrf.disable());
-        http.formLogin(withDefaults());
-        http.headers((header) -> header.frameOptions((option) -> option.disable()));
-        http.cors((cors) -> cors.disable());
+        http.csrf(AbstractHttpConfigurer::disable);
+//        http.headers((header) -> header.frameOptions((option) -> option.disable()));
+//        http.cors((cors) -> cors.disable());
         http.authenticationProvider(daoAuthenticationProvider());
 
         return http.build();
