@@ -21,6 +21,6 @@ public class User {
     @MapsId
     @JoinColumn(name = "user_id")
     @NonNull
-    private AppUser details;
+    private UserDetails details;
 
 }

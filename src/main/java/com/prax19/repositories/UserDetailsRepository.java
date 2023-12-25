@@ -6,12 +6,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.prax19.entities.AppUser;
+import com.prax19.entities.UserDetails;
 
 @Repository
 @Transactional(readOnly = true)
-public interface AppUserRepository extends JpaRepository<AppUser, Long> {
+public interface UserDetailsRepository extends JpaRepository<UserDetails, Long> {
 
-    Optional<AppUser> findByEmail(String email);
+    Optional<UserDetails> findByEmail(String email);
     
 }

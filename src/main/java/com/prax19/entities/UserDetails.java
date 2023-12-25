@@ -7,15 +7,14 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 
 @Data
 @NoArgsConstructor
 @RequiredArgsConstructor
 @Entity
-@Table(name = "app_users")
-public class AppUser implements UserDetails {
+@Table(name = "user_details")
+public class UserDetails implements org.springframework.security.core.userdetails.UserDetails {
 
     @Id
     @SequenceGenerator(

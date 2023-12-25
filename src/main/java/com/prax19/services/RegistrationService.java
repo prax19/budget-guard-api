@@ -3,7 +3,7 @@ package com.prax19.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.prax19.entities.AppUser;
+import com.prax19.entities.UserDetails;
 import com.prax19.entities.AppUserRole;
 import com.prax19.requests.RegistrationRequest;
 
@@ -16,7 +16,7 @@ public class RegistrationService {
     private EmailValidator emailValidator;
 
     @Autowired
-    private AppUserService appUserService;
+    private UserDetailsService userDetailsService;
 
     public String register(RegistrationRequest request) {
 
@@ -26,8 +26,8 @@ public class RegistrationService {
             throw new IllegalStateException(String.format(EMAIL_NOT_VALID_MSG, request.getEmail()));
         }
 
-        return appUserService.signUpUser(
-            new AppUser(
+        return userDetailsService.signUpUser(
+            new UserDetails(
                 request.getFirstName(),
                 request.getLastName(),
                 request.getEmail(),
