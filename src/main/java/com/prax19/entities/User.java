@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
 @Data
 @RequiredArgsConstructor
 @NoArgsConstructor
@@ -22,5 +24,8 @@ public class User {
     @JoinColumn(name = "user_id")
     @NonNull
     private UserDetails details;
+
+    @OneToMany(mappedBy = "owner")
+    private List<Budget> budgets;
 
 }

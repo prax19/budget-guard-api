@@ -1,13 +1,11 @@
 package com.prax19.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
+@RequiredArgsConstructor
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "budgets")
 public class Budget {
@@ -16,6 +14,13 @@ public class Budget {
     @GeneratedValue
     @Column(name="id")
     private Long id;
+
+    @NonNull
     private String name;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @NonNull
+    private User owner;
 
 }
