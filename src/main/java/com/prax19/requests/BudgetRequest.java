@@ -14,8 +14,9 @@ public class BudgetRequest {
         name = null;
     }
     @JsonCreator
-    public BudgetRequest(@JsonProperty("id")Long id,
-                         @JsonProperty("name") String name) {
+    public BudgetRequest(
+            @JsonProperty("id")Long id,
+            @JsonProperty("name") String name) {
         this();
         this.id = id;
         this.name = name;
