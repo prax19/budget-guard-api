@@ -26,7 +26,6 @@ public class UserDetails implements org.springframework.security.core.userdetail
         strategy = GenerationType.SEQUENCE,
         generator = "users_sequence"
     )
-    @Column(name="id")
     private Long id;
 
     @NonNull

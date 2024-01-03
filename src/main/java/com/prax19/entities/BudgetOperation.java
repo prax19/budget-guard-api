@@ -6,25 +6,26 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
-import java.util.List;
-
 @Data
 @RequiredArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "users")
-public class User {
+@Table(name = "operations")
+public class BudgetOperation {
 
     @Id
+    @GeneratedValue
     private Long id;
 
-    @OneToOne
-    @MapsId
-    @JoinColumn(name = "user_id")
     @NonNull
-    private UserDetails details;
+    private String name;
 
-    @OneToMany(mappedBy = "owner")
-    private List<Budget> budgets;
+    @ManyToOne
+    @JoinColumn(name = "budget_id")
+    @NonNull
+    private Budget budget;
+
+    @NonNull
+    private Float operationValue;
 
 }

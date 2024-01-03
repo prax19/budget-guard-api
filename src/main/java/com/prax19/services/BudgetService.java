@@ -14,6 +14,8 @@ import java.util.Objects;
 @Service
 public class BudgetService {
 
+    private final static String RESOURCE_ACCESS_DENIED_MSG = "no access to budget with id %s";
+
     @Autowired
     private BudgetRepository budgetRepository;
 
@@ -32,7 +34,7 @@ public class BudgetService {
                         userDetails.getUser()
                 ));
         if (budget.getOwner().getDetails().getId() != userDetails.getId())
-            throw new ResourceAccessException("No permission to budget with id: " + id);
+            throw new ResourceAccessException(String.format(RESOURCE_ACCESS_DENIED_MSG, id));
 
         if (Objects.nonNull(request.getName()))
             budget.setName(request.getName());
@@ -43,19 +45,19 @@ public class BudgetService {
     public Budget getBudgetById(UserDetails userDetails, Long id) {
         Budget budget = budgetRepository.findById(id).orElseThrow();
         if (budget.getOwner().getDetails().getId() != userDetails.getId())
-            throw new ResourceAccessException("No permission to budget with id: " + id);
+            throw new ResourceAccessException(String.format(RESOURCE_ACCESS_DENIED_MSG, id));
 
         return budget;
     }
 
-    public List<Budget> getAllBudgets(UserDetails userDetails) {
+    public List<Budget> getAllOwnedBudgets(UserDetails userDetails) {
         return budgetRepository.findAllByOwner(userDetails.getUser());
     }
 
     public void deleteBudget(UserDetails userDetails, Long id) {
         Budget budget = budgetRepository.findById(id).orElseThrow();
         if (budget.getOwner().getDetails().getId() != userDetails.getId())
-            throw new ResourceAccessException("No permission to budget with id: " + id);
+            throw new ResourceAccessException(String.format(RESOURCE_ACCESS_DENIED_MSG, id));
 
         budgetRepository.deleteById(id);
     }

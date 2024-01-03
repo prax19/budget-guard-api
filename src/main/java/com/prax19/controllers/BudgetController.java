@@ -42,10 +42,10 @@ public class BudgetController {
     }
 
     @GetMapping
-    public void getAllBudgets(
+    public void getAllOwnedBudgets(
             @AuthenticationPrincipal UserDetails userDetails
     ) {
-        List<Budget> list = budgetService.getAllBudgets(userDetails);
+        List<Budget> list = budgetService.getAllOwnedBudgets(userDetails);
         for(Budget budget: list)
             System.out.println(budget.getName());
     }

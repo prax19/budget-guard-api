@@ -3,6 +3,8 @@ package com.prax19.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Data
 @RequiredArgsConstructor
 @NoArgsConstructor
@@ -12,15 +14,17 @@ public class Budget {
 
     @Id
     @GeneratedValue
-    @Column(name="id")
     private Long id;
 
     @NonNull
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "owner_id")
     @NonNull
     private User owner;
+
+    @OneToMany(mappedBy = "budget")
+    private List<BudgetOperation> operations;
 
 }
