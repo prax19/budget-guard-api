@@ -20,10 +20,11 @@ public class BudgetOperation {
     @NonNull
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "budget_id")
     @NonNull
-    private Budget budget;
+    private Long budgetId;
+
+    @NonNull
+    private Long userId;
 
     @NonNull
     private Float operationValue;

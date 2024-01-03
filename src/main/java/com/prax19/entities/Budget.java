@@ -22,7 +22,7 @@ public class Budget {
     @NonNull
     private Long ownerId;
 
-    @OneToMany(mappedBy = "budget")
-    private List<BudgetOperation> operations;
+    @ElementCollection
+    private List<Long> operations;
 
 }
