@@ -27,7 +27,7 @@ public class UserDetailsService implements org.springframework.security.core.use
                 new UsernameNotFoundException(String.format(USER_NOT_FOUND_MSG, email)));
     }
 
-    public String signUpUser(UserDetails userDetails) {
+    public UserDetails signUpUser(UserDetails userDetails) {
         boolean userExists = userDetailsRepository.findByEmail(userDetails.getEmail()).isPresent();
 
         if(userExists)
@@ -39,7 +39,7 @@ public class UserDetailsService implements org.springframework.security.core.use
         userDetails.setUser(new User(userDetails));
         userDetailsRepository.save(userDetails);
 
-        return userDetails.getEmail();
+        return userDetails;
     }
     
 }

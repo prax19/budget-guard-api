@@ -18,7 +18,7 @@ public class RegistrationService {
     @Autowired
     private UserDetailsService userDetailsService;
 
-    public String register(RegistrationRequest request) {
+    public UserDetails register(RegistrationRequest request) {
 
         boolean isValidEmail = emailValidator.test(request.getEmail());
 
