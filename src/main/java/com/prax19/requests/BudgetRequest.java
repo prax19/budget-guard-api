@@ -5,25 +5,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class BudgetRequest {
 
+    private final String name;
 
-    private Long id;
-    private String name;
-
-    private BudgetRequest() {
-        id = null;
-        name = null;
-    }
     @JsonCreator
     public BudgetRequest(
-            @JsonProperty("id")Long id,
             @JsonProperty("name") String name) {
-        this();
-        this.id = id;
         this.name = name;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public String getName() {
