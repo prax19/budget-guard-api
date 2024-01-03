@@ -24,7 +24,7 @@ public class User {
     @NonNull
     private UserDetails details;
 
-    @OneToMany(mappedBy = "owner")
-    private List<Budget> budgets;
+    @ElementCollection
+    private List<Long> budgets;
 
 }

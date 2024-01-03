@@ -38,7 +38,7 @@ public class BudgetController {
             @PathVariable Long id
     ) {
         Budget budget = budgetService.getBudgetById(userDetails, id);
-        System.out.println(budget.getId() + ", " + budget.getName() + ", " + budget.getOwner().getDetails().getUsername());
+        System.out.println(budget.getId() + ", " + budget.getName());
     }
 
     @GetMapping

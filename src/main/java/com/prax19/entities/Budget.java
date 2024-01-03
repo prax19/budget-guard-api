@@ -19,10 +19,8 @@ public class Budget {
     @NonNull
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "owner_id")
     @NonNull
-    private User owner;
+    private Long ownerId;
 
     @OneToMany(mappedBy = "budget")
     private List<BudgetOperation> operations;

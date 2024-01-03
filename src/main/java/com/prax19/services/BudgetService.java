@@ -22,7 +22,7 @@ public class BudgetService {
     public void addNewBudget(UserDetails userDetails, BudgetRequest request) {
         Budget budget = new Budget(
                 request.getName(),
-                userDetails.getUser()
+                userDetails.getUser().getId()
         );
         budgetRepository.save(budget);
     }
@@ -31,9 +31,9 @@ public class BudgetService {
         Budget budget = budgetRepository.findById(id)
                 .orElse(new Budget(
                         request.getName(),
-                        userDetails.getUser()
+                        userDetails.getUser().getId()
                 ));
-        if (budget.getOwner().getDetails().getId() != userDetails.getId())
+        if (budget.getOwnerId() != userDetails.getId())
             throw new ResourceAccessException(String.format(RESOURCE_ACCESS_DENIED_MSG, id));
 
         if (Objects.nonNull(request.getName()))
@@ -44,19 +44,19 @@ public class BudgetService {
 
     public Budget getBudgetById(UserDetails userDetails, Long id) {
         Budget budget = budgetRepository.findById(id).orElseThrow();
-        if (budget.getOwner().getDetails().getId() != userDetails.getId())
+        if (budget.getOwnerId() != userDetails.getId())
             throw new ResourceAccessException(String.format(RESOURCE_ACCESS_DENIED_MSG, id));
 
         return budget;
     }
 
     public List<Budget> getAllOwnedBudgets(UserDetails userDetails) {
-        return budgetRepository.findAllByOwner(userDetails.getUser());
+        return budgetRepository.findAllByOwnerId(userDetails.getId());
     }
 
     public void deleteBudget(UserDetails userDetails, Long id) {
         Budget budget = budgetRepository.findById(id).orElseThrow();
-        if (budget.getOwner().getDetails().getId() != userDetails.getId())
+        if (budget.getOwnerId() != userDetails.getId())
             throw new ResourceAccessException(String.format(RESOURCE_ACCESS_DENIED_MSG, id));
 
         budgetRepository.deleteById(id);
