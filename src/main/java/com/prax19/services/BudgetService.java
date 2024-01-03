@@ -1,7 +1,6 @@
 package com.prax19.services;
 
 import com.prax19.entities.Budget;
-import com.prax19.entities.User;
 import com.prax19.entities.UserDetails;
 import com.prax19.repositories.BudgetRepository;
 import com.prax19.requests.BudgetRequest;
@@ -9,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
 
+import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 public class BudgetService {
@@ -47,6 +46,10 @@ public class BudgetService {
             throw new ResourceAccessException("No permission to budget with id: " + id);
 
         return budget;
+    }
+
+    public List<Budget> getAllBudgets(UserDetails userDetails) {
+        return budgetRepository.findAllByOwner(userDetails.getUser());
     }
 
     public void deleteBudget(UserDetails userDetails, Long id) {

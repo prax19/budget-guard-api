@@ -1,13 +1,14 @@
 package com.prax19.controllers;
 
 import com.prax19.entities.Budget;
-import com.prax19.entities.User;
 import com.prax19.entities.UserDetails;
 import com.prax19.requests.BudgetRequest;
 import com.prax19.services.BudgetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/budget")
@@ -38,6 +39,15 @@ public class BudgetController {
     ) {
         Budget budget = budgetService.getBudgetById(userDetails, id);
         System.out.println(budget.getId() + ", " + budget.getName() + ", " + budget.getOwner().getDetails().getUsername());
+    }
+
+    @GetMapping
+    public void getAllBudgets(
+            @AuthenticationPrincipal UserDetails userDetails
+    ) {
+        List<Budget> list = budgetService.getAllBudgets(userDetails);
+        for(Budget budget: list)
+            System.out.println(budget.getName());
     }
 
     @DeleteMapping("/{id}")
