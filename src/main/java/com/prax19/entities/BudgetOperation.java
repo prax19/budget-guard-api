@@ -17,6 +17,10 @@ public class BudgetOperation {
     @GeneratedValue
     private Long id;
 
+//    @Temporal(TemporalType.TIMESTAMP)
+//    @NonNull
+//    private Timestamp timestamp;
+
     @NonNull
     private String name;
 
