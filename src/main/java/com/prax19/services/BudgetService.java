@@ -25,15 +25,16 @@ public class BudgetService {
     @Autowired
     private BudgetOperationService budgetOperationService;
 
-    public void addNewBudget(UserDetails userDetails, BudgetRequest request) {
+    public Budget addNewBudget(UserDetails userDetails, BudgetRequest request) {
         Budget budget = new Budget(
                 request.getName(),
                 userDetails.getUser().getId()
         );
         budgetRepository.save(budget);
+        return budget;
     }
 
-    public void setBudget(UserDetails userDetails, BudgetRequest request, Long id) {
+    public Budget setBudget(UserDetails userDetails, BudgetRequest request, Long id) {
         Budget budget = budgetRepository.findById(id)
                 .orElse(new Budget(
                         request.getName(),
@@ -46,6 +47,7 @@ public class BudgetService {
             budget.setName(request.getName());
 
         budgetRepository.saveAndFlush(budget);
+        return budget;
     }
 
     public Budget getBudgetById(UserDetails userDetails, Long id) {
@@ -60,12 +62,13 @@ public class BudgetService {
         return budgetRepository.findAllByOwnerId(userDetails.getId());
     }
 
-    public void deleteBudget(UserDetails userDetails, Long id) {
+    public Budget deleteBudget(UserDetails userDetails, Long id) {
         Budget budget = budgetRepository.findById(id).orElseThrow();
         if (budget.getOwnerId() != userDetails.getId())
             throw new ResourceAccessException(String.format(RESOURCE_ACCESS_DENIED_MSG, id));
 
         budgetRepository.deleteById(id);
+        return budget;
     }
 
     public BudgetOperation addBudgetOperation(
@@ -110,7 +113,7 @@ public class BudgetService {
 
     }
 
-    public void deleteBudgetOperation(
+    public BudgetOperation deleteBudgetOperation(
             UserDetails userDetails,
             Long budgetId,
             Long operationId
@@ -121,13 +124,14 @@ public class BudgetService {
         if(!budget.getOperations().contains(operationId))
             throw new NoSuchElementException();
 
-        budgetOperationService.deleteBudgetOperation(
+        BudgetOperation operation = budgetOperationService.deleteBudgetOperation(
                 userDetails,
                 budget,
                 operationId
         );
         budget.getOperations().remove(operationId);
         budgetRepository.saveAndFlush(budget);
+        return operation;
     }
 
     public BudgetOperation getBudgetOperation(

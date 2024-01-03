@@ -65,7 +65,7 @@ public class BudgetOperationService {
     }
 
     @Transactional
-    public void deleteBudgetOperation(
+    public BudgetOperation deleteBudgetOperation(
             UserDetails userDetails,
             Budget budget,
             Long operationId
@@ -75,7 +75,9 @@ public class BudgetOperationService {
         if(!budget.getOperations().contains(operationId))
             throw new NoSuchElementException();
 
+        BudgetOperation operation = budgetOperationRepository.getBudgetOperationById(operationId);
         budgetOperationRepository.deleteBudgetOperationById(operationId);
+        return operation;
     }
 
     public BudgetOperation getBudgetOperation(
