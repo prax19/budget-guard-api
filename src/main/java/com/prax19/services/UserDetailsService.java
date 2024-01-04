@@ -1,5 +1,6 @@
 package com.prax19.services;
 
+import com.prax19.entities.Budget;
 import com.prax19.entities.UserDetails;
 import com.prax19.entities.User;
 import com.prax19.repositories.UserDetailsRepository;

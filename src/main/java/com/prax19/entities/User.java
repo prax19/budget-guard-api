@@ -24,7 +24,4 @@ public class User {
     @NonNull
     private UserDetails details;
 
-    @ElementCollection
-    private List<Long> budgets;
-
 }
