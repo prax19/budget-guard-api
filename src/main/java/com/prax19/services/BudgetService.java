@@ -67,6 +67,13 @@ public class BudgetService {
         if (budget.getOwnerId() != userDetails.getId())
             throw new ResourceAccessException(String.format(RESOURCE_ACCESS_DENIED_MSG, id));
 
+        for(Long operationId: budget.getOperations())
+            budgetOperationService.deleteBudgetOperation(
+                    userDetails,
+                    budget,
+                    operationId
+            );
+
         budgetRepository.deleteById(id);
         return budget;
     }
