@@ -1,5 +1,6 @@
 package com.prax19.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,7 @@ public class BudgetOperation {
 
     @Id
     @GeneratedValue
+    @JsonProperty("id")
     private Long id;
 
 //    @Temporal(TemporalType.TIMESTAMP)
@@ -22,15 +24,19 @@ public class BudgetOperation {
 //    private Timestamp timestamp;
 
     @NonNull
+    @JsonProperty("name")
     private String name;
 
     @NonNull
+    @JsonProperty("budgetId")
     private Long budgetId;
 
     @NonNull
+    @JsonProperty("userId")
     private Long userId;
 
     @NonNull
+    @JsonProperty("value")
     private Float operationValue;
 
 }
