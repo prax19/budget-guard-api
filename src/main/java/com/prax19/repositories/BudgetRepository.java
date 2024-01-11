@@ -1,7 +1,6 @@
 package com.prax19.repositories;
 
 import com.prax19.entities.Budget;
-import com.prax19.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

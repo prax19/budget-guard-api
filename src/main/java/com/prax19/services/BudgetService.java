@@ -28,7 +28,7 @@ public class BudgetService {
     public Budget addNewBudget(UserDetails userDetails, BudgetRequest request) {
         Budget budget = new Budget(
                 request.getName(),
-                userDetails.getUser().getId()
+                userDetails.getId()
         );
         budgetRepository.save(budget);
         return budget;
@@ -38,7 +38,7 @@ public class BudgetService {
         Budget budget = budgetRepository.findById(id)
                 .orElse(new Budget(
                         request.getName(),
-                        userDetails.getUser().getId()
+                        userDetails.getId()
                 ));
         if (budget.getOwnerId() != userDetails.getId())
             throw new ResourceAccessException(String.format(RESOURCE_ACCESS_DENIED_MSG, id));

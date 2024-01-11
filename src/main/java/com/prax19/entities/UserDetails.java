@@ -50,10 +50,6 @@ public class UserDetails implements org.springframework.security.core.userdetail
     @NonNull
     private Boolean enabled;
 
-    @OneToOne(mappedBy = "details", cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
-    private User user;
-
     @Override
     public String getUsername() {
         return getEmail();

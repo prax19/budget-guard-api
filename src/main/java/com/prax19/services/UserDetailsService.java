@@ -1,8 +1,6 @@
 package com.prax19.services;
 
-import com.prax19.entities.Budget;
 import com.prax19.entities.UserDetails;
-import com.prax19.entities.User;
 import com.prax19.repositories.UserDetailsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -37,7 +35,6 @@ public class UserDetailsService implements org.springframework.security.core.use
         String encodedPassword = bCryptPasswordEncoder.encode(userDetails.getPassword());
         userDetails.setPassword(encodedPassword);
 
-        userDetails.setUser(new User(userDetails));
         userDetailsRepository.save(userDetails);
 
         return userDetails;
