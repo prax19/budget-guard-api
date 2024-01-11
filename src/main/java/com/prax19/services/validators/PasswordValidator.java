@@ -1,16 +1,16 @@
-package com.prax19.services;
+package com.prax19.services.validators;
 
 import org.springframework.stereotype.Service;
 
 import java.util.function.Predicate;
 
 @Service
-public class EmailValidator implements Predicate<String> {
+public class PasswordValidator implements Predicate<String> {
 
     @Override
     public boolean test(String t) {
         //TODO: Email regex
         return true;
     }
-    
+
 }
