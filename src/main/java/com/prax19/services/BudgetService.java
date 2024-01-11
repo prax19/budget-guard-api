@@ -40,7 +40,7 @@ public class BudgetService {
                         request.getName(),
                         userDetails.getId()
                 ));
-        if (budget.getOwnerId() != userDetails.getId())
+        if (!budget.getOwnerId().equals(userDetails.getId()))
             throw new ResourceAccessException(String.format(RESOURCE_ACCESS_DENIED_MSG, id));
 
         if (Objects.nonNull(request.getName()))
@@ -52,7 +52,7 @@ public class BudgetService {
 
     public Budget getBudgetById(UserDetails userDetails, Long id) {
         Budget budget = budgetRepository.findById(id).orElseThrow();
-        if (budget.getOwnerId() != userDetails.getId())
+        if (!budget.getOwnerId().equals(userDetails.getId()))
             throw new ResourceAccessException(String.format(RESOURCE_ACCESS_DENIED_MSG, id));
 
         return budget;
@@ -64,7 +64,7 @@ public class BudgetService {
 
     public Budget deleteBudget(UserDetails userDetails, Long id) {
         Budget budget = budgetRepository.findById(id).orElseThrow();
-        if (budget.getOwnerId() != userDetails.getId())
+        if (!budget.getOwnerId().equals(userDetails.getId()))
             throw new ResourceAccessException(String.format(RESOURCE_ACCESS_DENIED_MSG, id));
 
         for(Long operationId: budget.getOperations())
@@ -84,7 +84,7 @@ public class BudgetService {
             BudgetOperationRequest request
     ) {
         Budget budget = budgetRepository.findById(budgetId).orElseThrow();
-        if (budget.getOwnerId() != userDetails.getId())
+        if (!budget.getOwnerId().equals(userDetails.getId()))
             throw new ResourceAccessException(String.format(RESOURCE_ACCESS_DENIED_MSG, budgetId));
 
         BudgetOperation operation = budgetOperationService.addBudgetOperation(userDetails, budget, request);
@@ -102,7 +102,7 @@ public class BudgetService {
             BudgetOperationRequest request
     ) {
         Budget budget = budgetRepository.findById(budgetId).orElseThrow();
-        if (budget.getOwnerId() != userDetails.getId())
+        if (!budget.getOwnerId().equals(userDetails.getId()))
             throw new ResourceAccessException(String.format(RESOURCE_ACCESS_DENIED_MSG, budgetId));
 
         BudgetOperation operation;
@@ -126,7 +126,7 @@ public class BudgetService {
             Long operationId
     ) {
         Budget budget = budgetRepository.findById(budgetId).orElseThrow();
-        if (budget.getOwnerId() != userDetails.getId())
+        if (!budget.getOwnerId().equals(userDetails.getId()))
             throw new ResourceAccessException(String.format(RESOURCE_ACCESS_DENIED_MSG, budgetId));
         if(!budget.getOperations().contains(operationId))
             throw new NoSuchElementException();
@@ -147,7 +147,7 @@ public class BudgetService {
             Long operationId
     ) {
         Budget budget = budgetRepository.findById(budgetId).orElseThrow();
-        if (budget.getOwnerId() != userDetails.getId())
+        if (!budget.getOwnerId().equals(userDetails.getId()))
             throw new ResourceAccessException(String.format(RESOURCE_ACCESS_DENIED_MSG, budgetId));
         if(!budget.getOperations().contains(operationId))
             throw new NoSuchElementException();
@@ -160,7 +160,7 @@ public class BudgetService {
             Long budgetId
     ) {
         Budget budget = budgetRepository.findById(budgetId).orElseThrow();
-        if (budget.getOwnerId() != userDetails.getId())
+        if (!budget.getOwnerId().equals(userDetails.getId()))
             throw new ResourceAccessException(String.format(RESOURCE_ACCESS_DENIED_MSG, budgetId));
 
         return  budgetOperationService.getAllBudgetOperations(
