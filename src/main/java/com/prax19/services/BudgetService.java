@@ -11,7 +11,6 @@ import com.prax19.requests.BudgetOperationRequest;
 import com.prax19.requests.BudgetRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.ResourceAccessException;
 
 import java.util.List;
 import java.util.Objects;
@@ -54,8 +53,7 @@ public class BudgetService {
 
     public Budget getBudgetById(UserDetails userDetails, Long id) {
         Budget budget = budgetRepository.findById(id)
-                .orElseThrow(() ->
-                        new BudgetNotFoundException()
+                .orElseThrow(BudgetNotFoundException::new
                 );
         if (!budget.getOwnerId().equals(userDetails.getId()))
             throw new NoBudgetAccessException(String.format(RESOURCE_ACCESS_DENIED_MSG, id));
@@ -69,8 +67,7 @@ public class BudgetService {
 
     public Budget deleteBudget(UserDetails userDetails, Long id) {
         Budget budget = budgetRepository.findById(id)
-                .orElseThrow(() ->
-                        new BudgetNotFoundException()
+                .orElseThrow(BudgetNotFoundException::new
                 );
         if (!budget.getOwnerId().equals(userDetails.getId()))
             throw new NoBudgetAccessException(String.format(RESOURCE_ACCESS_DENIED_MSG, id));
@@ -91,12 +88,7 @@ public class BudgetService {
             Long budgetId,
             BudgetOperationRequest request
     ) {
-        Budget budget = budgetRepository.findById(budgetId)
-                .orElseThrow(() ->
-                        new BudgetNotFoundException()
-                );
-        if (!budget.getOwnerId().equals(userDetails.getId()))
-            throw new NoBudgetAccessException(String.format(RESOURCE_ACCESS_DENIED_MSG, budgetId));
+        Budget budget = getBudgetById(userDetails, budgetId);
 
         BudgetOperation operation = budgetOperationService.addBudgetOperation(userDetails, budget, request);
         budget.getOperations().add(operation.getId());
@@ -112,12 +104,7 @@ public class BudgetService {
             Long operationId,
             BudgetOperationRequest request
     ) {
-        Budget budget = budgetRepository.findById(budgetId)
-                .orElseThrow(() ->
-                        new BudgetNotFoundException()
-                );
-        if (!budget.getOwnerId().equals(userDetails.getId()))
-            throw new NoBudgetAccessException(String.format(RESOURCE_ACCESS_DENIED_MSG, budgetId));
+        Budget budget = getBudgetById(userDetails, budgetId);
 
         BudgetOperation operation;
         if(!budget.getOperations().contains(operationId))
@@ -139,12 +126,7 @@ public class BudgetService {
             Long budgetId,
             Long operationId
     ) {
-        Budget budget = budgetRepository.findById(budgetId)
-            .orElseThrow(() ->
-                new BudgetNotFoundException()
-            );
-        if (!budget.getOwnerId().equals(userDetails.getId()))
-            throw new NoBudgetAccessException(String.format(RESOURCE_ACCESS_DENIED_MSG, budgetId));
+        Budget budget = getBudgetById(userDetails, budgetId);
         if(!budget.getOperations().contains(operationId))
             throw new OperationNotFoundException();
 
@@ -163,12 +145,7 @@ public class BudgetService {
             Long budgetId,
             Long operationId
     ) {
-        Budget budget = budgetRepository.findById(budgetId)
-                .orElseThrow(() ->
-                        new BudgetNotFoundException()
-                );
-        if (!budget.getOwnerId().equals(userDetails.getId()))
-            throw new NoBudgetAccessException(String.format(RESOURCE_ACCESS_DENIED_MSG, budgetId));
+        Budget budget = getBudgetById(userDetails, budgetId);
         if(!budget.getOperations().contains(operationId))
             throw new OperationNotFoundException();
 
@@ -179,12 +156,7 @@ public class BudgetService {
             UserDetails userDetails,
             Long budgetId
     ) {
-        Budget budget = budgetRepository.findById(budgetId)
-                .orElseThrow(() ->
-                        new BudgetNotFoundException()
-                );
-        if (!budget.getOwnerId().equals(userDetails.getId()))
-            throw new NoBudgetAccessException(String.format(RESOURCE_ACCESS_DENIED_MSG, budgetId));
+        Budget budget = getBudgetById(userDetails, budgetId);
 
         return  budgetOperationService.getAllBudgetOperations(
                 userDetails,
