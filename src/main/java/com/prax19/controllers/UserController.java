@@ -13,13 +13,13 @@ import com.prax19.requests.RegistrationRequest;
 import com.prax19.services.RegistrationService;
 
 @RestController
-@RequestMapping("api/v1/registration")
-public class RegistrationController {
+@RequestMapping("api/v1/user")
+public class UserController {
 
     @Autowired
     private RegistrationService registrationService;
 
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody RegistrationRequest request) {
         UserDetails userDetails = registrationService.register(request);
         return new ResponseEntity<>(
