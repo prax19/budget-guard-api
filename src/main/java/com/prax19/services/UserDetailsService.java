@@ -7,10 +7,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
+
 @Service
 public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
 
-    private final static String USER_NOT_FOUND_MSG = "user with email '%s' not found";
+    private final static String USER_NOT_FOUND_EMAIL_MSG = "user with email '%s' not found";
+    private final static String USER_NOT_FOUND_ID_MSG = "user with id '%s' not found";
     private final static String USER_ALREADY_EXISTS_MSG = "user with email '%s' already exists";
 
     @Autowired
@@ -20,10 +23,18 @@ public class UserDetailsService implements org.springframework.security.core.use
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
-    public org.springframework.security.core.userdetails.UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return userDetailsRepository.findByEmail(email)
             .orElseThrow(() -> 
-                new UsernameNotFoundException(String.format(USER_NOT_FOUND_MSG, email)));
+                new UsernameNotFoundException(String.format(USER_NOT_FOUND_EMAIL_MSG, email))
+            );
+    }
+
+    public UserDetails loadUserById(Long id) throws NoSuchElementException {
+        return userDetailsRepository.findById(id)
+                .orElseThrow(() ->
+                        new NoSuchElementException(String.format(USER_NOT_FOUND_ID_MSG, id))
+                );
     }
 
     public UserDetails signUpUser(UserDetails userDetails) {
