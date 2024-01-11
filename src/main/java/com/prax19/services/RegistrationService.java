@@ -1,7 +1,7 @@
 package com.prax19.services;
 
-import com.prax19.services.validators.EmailValidator;
-import com.prax19.services.validators.PasswordValidator;
+import com.prax19.services.validators.user.EmailValidator;
+import com.prax19.services.validators.user.PasswordValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

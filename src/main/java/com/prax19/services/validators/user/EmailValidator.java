@@ -1,4 +1,4 @@
-package com.prax19.services.validators;
+package com.prax19.services.validators.user;
 
 import org.springframework.stereotype.Service;
 
