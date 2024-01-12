@@ -11,6 +11,8 @@ spring:
     driver-class-name: org.h2.Driver
     username: sa
     password: sa
+  jpa:
+    show-sql: true
   h2:
     console:
-      enabled: true
+      enabled: false
