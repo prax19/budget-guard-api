@@ -24,10 +24,11 @@ public class RegistrationService {
     @Autowired
     private UserDetailsService userDetailsService;
 
+    @Deprecated
     public UserDetails register(RegistrationRequest request) {
 
-        if(!emailValidator.test(request.getEmail()))
-            throw new IllegalStateException(String.format(EMAIL_NOT_VALID_MSG, request.getEmail()));
+        if(!emailValidator.test(request.getLogin()))
+            throw new IllegalStateException(String.format(EMAIL_NOT_VALID_MSG, request.getLastName()));
         if(!passwordValidator.test(request.getPassword()))
             throw new IllegalStateException(String.format(PASSWORD_NOT_VALID_MSG));
 
@@ -35,7 +36,7 @@ public class RegistrationService {
             new UserDetails(
                 request.getFirstName(),
                 request.getLastName(),
-                request.getEmail(),
+                request.getLogin(),
                 request.getPassword(),
                 AppUserRole.USER,
                 false,

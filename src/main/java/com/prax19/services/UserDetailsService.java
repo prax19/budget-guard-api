@@ -6,7 +6,7 @@ import com.prax19.exceptions.user.UserNotFoundException;
 import com.prax19.repositories.UserDetailsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
@@ -22,7 +22,7 @@ public class UserDetailsService implements org.springframework.security.core.use
     private UserDetailsRepository userDetailsRepository;
 
     @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -39,12 +39,13 @@ public class UserDetailsService implements org.springframework.security.core.use
             );
     }
 
+    @Deprecated
     public UserDetails signUpUser(UserDetails userDetails) {
         boolean userExists = userDetailsRepository.findByEmail(userDetails.getEmail()).isPresent();
         if(userExists)
             throw new UserAlreadyExistsException(String.format(USER_ALREADY_EXISTS_MSG, userDetails.getEmail()));
 
-        String encodedPassword = bCryptPasswordEncoder.encode(userDetails.getPassword());
+        String encodedPassword = passwordEncoder.encode(userDetails.getPassword());
         userDetails.setPassword(encodedPassword);
 
         userDetailsRepository.save(userDetails);

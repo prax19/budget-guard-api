@@ -22,6 +22,7 @@ public class UserController {
     private UserDetailsService userDetailsService;
 
     @PostMapping("/register")
+    @Deprecated
     public ResponseEntity<String> register(@RequestBody RegistrationRequest request) {
         UserDetails userDetails = registrationService.register(request);
         return new ResponseEntity<>(
