@@ -21,9 +21,15 @@ public class JwtService {
 
     private final String JWT_SECRET;
 
+    private final int JWT_EXPIRATION_MINUTES;
+
     @Autowired
-    public JwtService(@Value("${budget-guard.jwt-secret.value}") String key) {
+    public JwtService(
+            @Value("${budget-guard.jwt-secret.value}") String key,
+            @Value("${budget-guard.config.jwt-expiration-minutes}") int minutes
+    ) {
         JWT_SECRET = key;
+        JWT_EXPIRATION_MINUTES = minutes;
     }
 
     public String extractUsername(String token) {
@@ -48,7 +54,7 @@ public class JwtService {
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getEmail())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60)) //TODO: change expiration
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * JWT_EXPIRATION_MINUTES)) //TODO: change expiration
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
