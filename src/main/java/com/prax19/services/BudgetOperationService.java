@@ -101,7 +101,7 @@ public class BudgetOperationService {
         if (budget.getOwnerId() != userDetails.getId())
             throw new ResourceAccessException(String.format(RESOURCE_ACCESS_DENIED_MSG, budget.getId()));
 
-        return budgetOperationRepository.getBudgetOperationsByBudgetId(budget.getId());
+        return budgetOperationRepository.getBudgetOperationsByBudgetIdOrderByDateTimeAsc(budget.getId());
     }
 
 }

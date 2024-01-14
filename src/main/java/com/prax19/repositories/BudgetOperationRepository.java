@@ -9,7 +9,7 @@ public interface BudgetOperationRepository extends JpaRepository<BudgetOperation
 
 
     BudgetOperation getBudgetOperationById(Long id);
-    List<BudgetOperation> getBudgetOperationsByBudgetId(Long id);
+    List<BudgetOperation> getBudgetOperationsByBudgetIdOrderByDateTimeAsc(Long id);
 
     void deleteBudgetOperationById(Long id);
 
