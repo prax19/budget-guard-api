@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.ResourceAccessException;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -57,6 +58,9 @@ public class BudgetOperationService {
         if (Objects.nonNull(request.getName()))
             operation.setName(request.getName());
 
+        if (Objects.nonNull(request.getDateTime()))
+            operation.setDateTime(request.getDateTime());
+
         if (Objects.nonNull(request.getOperationValue()))
             operation.setOperationValue(request.getOperationValue());
 
@@ -101,7 +105,9 @@ public class BudgetOperationService {
         if (budget.getOwnerId() != userDetails.getId())
             throw new ResourceAccessException(String.format(RESOURCE_ACCESS_DENIED_MSG, budget.getId()));
 
-        return budgetOperationRepository.getBudgetOperationsByBudgetIdOrderByDateTimeAsc(budget.getId());
+        List<BudgetOperation> operations = budgetOperationRepository.getBudgetOperationsByBudgetIdOrderByDateTimeAsc(budget.getId());
+        Collections.reverse(operations);
+        return operations;
     }
 
 }
