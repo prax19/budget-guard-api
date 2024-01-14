@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
+import java.sql.Date;
+import java.time.LocalDateTime;
+
 @Data
 @RequiredArgsConstructor
 @NoArgsConstructor
@@ -34,6 +37,10 @@ public class BudgetOperation {
     @NonNull
     @JsonProperty("userId")
     private Long userId;
+
+    @NonNull
+    @JsonProperty("dateTime")
+    private LocalDateTime dateTime;
 
     @NonNull
     @JsonProperty("value")

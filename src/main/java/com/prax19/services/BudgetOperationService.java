@@ -34,6 +34,7 @@ public class BudgetOperationService {
                 request.getName(),
                 budget.getId(),
                 userDetails.getId(),
+                request.getDateTime(),
                 request.getOperationValue()
         );
         budgetOperationRepository.save(operation);
