@@ -1,7 +1,6 @@
 package com.prax19.services;
 
 import com.prax19.entities.UserDetails;
-import com.prax19.exceptions.user.UserAlreadyExistsException;
 import com.prax19.exceptions.user.UserNotFoundException;
 import com.prax19.repositories.UserDetailsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,20 +36,6 @@ public class UserDetailsService implements org.springframework.security.core.use
             .orElseThrow(() ->
                     new UserNotFoundException(String.format(USER_NOT_FOUND_ID_MSG, id))
             );
-    }
-
-    @Deprecated
-    public UserDetails signUpUser(UserDetails userDetails) {
-        boolean userExists = userDetailsRepository.findByEmail(userDetails.getEmail()).isPresent();
-        if(userExists)
-            throw new UserAlreadyExistsException(String.format(USER_ALREADY_EXISTS_MSG, userDetails.getEmail()));
-
-        String encodedPassword = passwordEncoder.encode(userDetails.getPassword());
-        userDetails.setPassword(encodedPassword);
-
-        userDetailsRepository.save(userDetails);
-
-        return userDetails;
     }
     
 }
