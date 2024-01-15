@@ -30,4 +30,12 @@ public class Budget {
     @JsonProperty("operations")
     private List<Long> operations;
 
+    @JsonProperty(value = "balance", access = JsonProperty.Access.READ_ONLY)
+    private Float balance = 0f;
+
+    public void addToBalance(Float value) {
+        Float newBalance = balance + value;
+        balance = Math.round(newBalance * 100.0f) / 100.0f;
+    }
+
 }

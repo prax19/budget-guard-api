@@ -93,6 +93,8 @@ public class BudgetService {
         BudgetOperation operation = budgetOperationService.addBudgetOperation(userDetails, budget, request);
         budget.getOperations().add(operation.getId());
 
+        budget.addToBalance(operation.getOperationValue());
+
         budgetRepository.saveAndFlush(budget);
         return operation;
 
@@ -110,12 +112,20 @@ public class BudgetService {
         if(!budget.getOperations().contains(operationId))
             operation = addBudgetOperation(userDetails, budgetId, request);
         else {
+            Float oldValue = budgetOperationService
+                    .getBudgetOperation(userDetails, budget, operationId)
+                    .getOperationValue();
+
             operation = budgetOperationService.editBudgetOperation(
                     userDetails,
                     budget,
                     operationId,
                     request
             );
+
+            budget.addToBalance(operation.getOperationValue() - oldValue);
+
+            budgetRepository.saveAndFlush(budget);
         }
         return operation;
 
@@ -135,6 +145,7 @@ public class BudgetService {
                 budget,
                 operationId
         );
+        budget.addToBalance(operation.getOperationValue() * -1);
         budget.getOperations().remove(operationId);
         budgetRepository.saveAndFlush(budget);
         return operation;
