@@ -35,7 +35,7 @@ public class UserDetails implements org.springframework.security.core.userdetail
     private String lastName;
 
     @NonNull
-    private String email;
+    private String username;
 
     @NonNull
     private String password;
@@ -52,11 +52,7 @@ public class UserDetails implements org.springframework.security.core.userdetail
 
     @Override
     public String getUsername() {
-        return getEmail();
-    }
-
-    public String getEmail() {
-        return email;
+        return username;
     }
 
     @Override

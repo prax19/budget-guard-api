@@ -90,7 +90,11 @@ public class BudgetService {
     ) {
         Budget budget = getBudgetById(userDetails, budgetId);
 
-        BudgetOperation operation = budgetOperationService.addBudgetOperation(userDetails, budget, request);
+        BudgetOperation operation = budgetOperationService
+                .addBudgetOperation(
+                        userDetails,
+                        budget,
+                        request);
         budget.getOperations().add(operation.getId());
 
         budget.addToBalance(operation.getOperationValue());

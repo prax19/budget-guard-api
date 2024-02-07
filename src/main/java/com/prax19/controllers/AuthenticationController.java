@@ -24,7 +24,8 @@ public class AuthenticationController {
             @RequestBody RegistrationRequest request
     ) {
         return new ResponseEntity<>(
-                authenticationService.register(request), HttpStatus.OK
+                authenticationService.register(request),
+                HttpStatus.OK
         );
     }
 
@@ -33,7 +34,8 @@ public class AuthenticationController {
             @RequestBody AuthenticationRequest request
     ) {
         return new ResponseEntity<>(
-                authenticationService.authenticate(request), HttpStatus.OK
+                authenticationService.authenticate(request),
+                HttpStatus.OK
         );
     }
 

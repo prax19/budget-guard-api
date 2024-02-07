@@ -13,9 +13,9 @@ import java.util.NoSuchElementException;
 @Service
 public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
 
-    private final static String USER_NOT_FOUND_EMAIL_MSG = "user with email '%s' not found";
+    private final static String USER_NOT_FOUND_USERNAME_MSG = "user with username '%s' not found";
     private final static String USER_NOT_FOUND_ID_MSG = "user with id '%s' not found";
-    private final static String USER_ALREADY_EXISTS_MSG = "user with email '%s' already exists";
+    private final static String USER_ALREADY_EXISTS_MSG = "user with username '%s' already exists";
 
     @Autowired
     private UserDetailsRepository userDetailsRepository;
@@ -25,9 +25,9 @@ public class UserDetailsService implements org.springframework.security.core.use
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return userDetailsRepository.findByEmail(email)
+        return userDetailsRepository.findByUsername(email)
             .orElseThrow(() -> 
-                new UserNotFoundException(String.format(USER_NOT_FOUND_EMAIL_MSG, email))
+                new UserNotFoundException(String.format(USER_NOT_FOUND_USERNAME_MSG, email))
             );
     }
 

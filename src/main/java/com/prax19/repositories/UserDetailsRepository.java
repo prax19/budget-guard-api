@@ -12,7 +12,7 @@ import com.prax19.entities.UserDetails;
 @Transactional(readOnly = true)
 public interface UserDetailsRepository extends JpaRepository<UserDetails, Long> {
 
-    Optional<UserDetails> findByEmail(String email);
+    Optional<UserDetails> findByUsername(String username);
 
     Optional<UserDetails> findById(Long id);
     

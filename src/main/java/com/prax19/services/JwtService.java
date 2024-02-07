@@ -1,4 +1,4 @@
-package com.prax19.config;
+package com.prax19.services;
 
 import com.prax19.entities.UserDetails;
 import io.jsonwebtoken.Claims;
@@ -52,16 +52,18 @@ public class JwtService {
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
-                .setSubject(userDetails.getEmail())
+                .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * JWT_EXPIRATION_MINUTES)) //TODO: change expiration
+                .setExpiration(new Date(System.currentTimeMillis()
+                        + 1000 * 60 * JWT_EXPIRATION_MINUTES)
+                )
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
-        return (username.equals(userDetails.getEmail())) && !isTokenExpired(token);
+        return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
 
     private boolean isTokenExpired(String token) {

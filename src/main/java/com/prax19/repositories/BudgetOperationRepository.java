@@ -7,7 +7,6 @@ import java.util.List;
 
 public interface BudgetOperationRepository extends JpaRepository<BudgetOperation, Long> {
 
-
     BudgetOperation getBudgetOperationById(Long id);
     List<BudgetOperation> getBudgetOperationsByBudgetIdOrderByDateTimeAsc(Long id);
 

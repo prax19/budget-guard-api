@@ -1,6 +1,5 @@
 package com.prax19.services;
 
-import com.prax19.config.JwtService;
 import com.prax19.entities.AppUserRole;
 import com.prax19.entities.UserDetails;
 import com.prax19.exceptions.user.UserAlreadyExistsException;
@@ -47,7 +46,7 @@ public class AuthenticationService {
             throw new IllegalStateException(String.format(EMAIL_NOT_VALID_MSG, request.getLastName()));
         if(!passwordValidator.test(request.getPassword()))
             throw new IllegalStateException(String.format(PASSWORD_NOT_VALID_MSG));
-        boolean userExists = userDetailsRepository.findByEmail(request.getLogin()).isPresent();
+        boolean userExists = userDetailsRepository.findByUsername(request.getLogin()).isPresent();
         if(userExists)
             throw new UserAlreadyExistsException(String.format(USER_ALREADY_EXISTS_MSG, request.getLogin()));
 
@@ -74,7 +73,7 @@ public class AuthenticationService {
                         request.getPassword()
                 )
         );
-        UserDetails userDetails = userDetailsRepository.findByEmail(request.getLogin())
+        UserDetails userDetails = userDetailsRepository.findByUsername(request.getLogin())
                 .orElseThrow(UserNotFoundException::new);
         String jwtToken = jwtService.generateToken(userDetails);
         return AuthenticationResponse.builder()
